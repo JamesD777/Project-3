@@ -18,7 +18,6 @@ public class Project3 {
     public static void main(String[] args)throws FileNotFoundException{
         LinkedList A1Available = new LinkedList();
         LinkedList A1Reserved = new LinkedList();
-        PrintWriter p = null;
         //looks for first file and reads it
         try {
             File f = new File("A1.txt");
@@ -82,44 +81,47 @@ public class Project3 {
         
         LinkedList a = null;
         LinkedList r = null;
-        boolean loop = true;
-
-        while(loop){
-            System.out.println("Which auditorium would you to see?");
-                switch(input.nextInt()){
-                    case 1:
-                        a = A1Available;
-                        r = A1Reserved;
-                        loop = false;
-                        p = new PrintWriter("A1.txt");
-                        break;
-                    case 2:
-                        a = A2Available;
-                        r = A2Reserved;
-                        loop = false;
-                        p = new PrintWriter("A2.txt");
-                        break;
-                    case 3:
-                        a = A3Available;
-                        r = A3Reserved;
-                        loop = false;
-                        p = new PrintWriter("A3.txt");
-                        break;
-                    default:
-                        System.out.println("Invalid input");
-                    
-                }
-        }
+        boolean loop;
+        Boolean loop2;
+        
         loop = true;
         while(loop){
+            PrintWriter p = null;
             System.out.println("\n1) Reserve Seats \n" + "2) View Auditorium \n" + "3) Exit");
             switch(input.nextInt()){
                 case 1:
+                    loop2 = true;
+                    while(loop2){
+                        System.out.println("Which auditorium would you like to reserve in?");
+                            switch(input.nextInt()){
+                                case 1:
+                                    a = A1Available;
+                                    r = A1Reserved;
+                                    loop2 = false;
+                                    p = new PrintWriter("A1.txt");
+                                    break;
+                                case 2:
+                                    a = A2Available;
+                                    r = A2Reserved;
+                                    loop2 = false;
+                                    p = new PrintWriter("A2.txt");
+                                    break;
+                                case 3:
+                                    a = A3Available;
+                                    r = A3Reserved;
+                                    loop2 = false;
+                                    p = new PrintWriter("A3.txt");
+                                    break;
+                                default:
+                                    System.out.println("Invalid input");
+
+                            }
+                    }
                     int row = 0;
                     int seat = 0;
                     int n = 0;
 
-                    boolean loop2 = true;
+                    loop2 = true;
                     while(loop2){
                         System.out.println("Which row do you want?");
                         row = input.nextInt() - 1;
@@ -161,9 +163,36 @@ public class Project3 {
                         else
                             System.out.println("Seats NOT reserved");
                     }
+                    r.print(p, a);
+                    p.close();
+
                     break;
 
                 case 2:
+                    loop2 = true;
+                    while(loop2){
+                        System.out.println("Which auditorium would you like to see?");
+                            switch(input.nextInt()){
+                                case 1:
+                                    a = A1Available;
+                                    r = A1Reserved;
+                                    loop2 = false;
+                                    break;
+                                case 2:
+                                    a = A2Available;
+                                    r = A2Reserved;
+                                    loop2 = false;
+                                    break;
+                                case 3:
+                                    a = A3Available;
+                                    r = A3Reserved;
+                                    loop2 = false;
+                                    break;
+                                default:
+                                    System.out.println("Invalid input");
+
+                            }
+                    }
                     display(a, r);
                     break;
                 case 3:
@@ -193,18 +222,10 @@ public class Project3 {
         int count = 0;
         while(cura != null && curr != null){
             if(cura.getSeat() == count && cura.getRow() == row){
-                if(cura.getRow() > row){
-                    System.out.print("\n" + cura.getRow() + " ");
-                    row++;
-                }
                 System.out.print("# ");
                 cura = cura.getNext();
             }
             else{
-                if(curr.getRow() > row){
-                    System.out.print("\n" + curr.getRow() + " ");
-                    row++;
-                }
                 System.out.print(". ");
                 curr = curr.getNext();
             }
@@ -214,9 +235,31 @@ public class Project3 {
                 row++;
                 System.out.print("\n" + (row+1) + " ");}
         }
-        if(cura == null)
+        while(cura != null){
+            if(count == 20){
+                count -= 20;
+                row++;
+                System.out.print("\n" + (row+1) + " ");}
+            if(cura.getSeat() == count && cura.getRow() == row){
+                System.out.print("# ");
+                cura = cura.getNext();
+            }
+            count++;
+        }
+        while(curr != null){
+            if(count == 20){
+                count -= 20;
+                row++;
+                System.out.print("\n" + (row+1) + " ");}
+            if(curr.getSeat() == count && curr.getRow() == row){
+                System.out.print(". ");
+                curr = curr.getNext();
+            }
+            count++;
+        }
+        if(cura == null && curr != null)
             System.out.print('.' + "\n\n");
-        else
+        if(cura != null && curr == null)
             System.out.print('#' +"\n\n");
     }
 
@@ -267,7 +310,7 @@ public class Project3 {
         while(cur.getNext() != null){
             if(cur.getRow() == r && cur.getSeat() == s){
                 for(int i = 0;i < n;i++){
-                    if(cur.getRow() != r || cur.getSeat() != s + i || cur.getNext() == null)
+                    if(cur == null || cur.getRow() != r || cur.getSeat() != s + i)
                         return false;
                     cur = cur.getNext();
                 }

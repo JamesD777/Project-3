@@ -76,54 +76,43 @@ public class LinkedList {
             c = c.getNext();
         }
     }
-    public void printR(PrintWriter out, DoubleLinkNode n)
+    
+    public void print(PrintWriter out, LinkedList a)//recursive helper function
     {
-        if(n == null)
-            return;
-        else{
-            out.print('.');
-            if(n.getNext().getRow() > n.getRow())
-                out.println();
-            for(int i = n.getRow(); i < n.getNext().getRow()+1; i++){
-                for(int j = n.getSeat(); j < n.getNext().getSeat(); j++)
-                        out.print('#');
-                out.println();
-            }
-            if(n.getNext().getNext() != null)
-                printR(out, n.getNext());
-        }
-        out.print('.');
-        if(n.getNext().getRow() > n.getRow())
-            out.println();
-        for(int i = n.getRow(); i < n.getNext().getRow()+1; i++){
-                for(int j = n.getSeat(); j < n.getNext().getSeat(); j++)
-                        out.print('#');
-                out.println();
-        }
+        print(out, a.getHead(), head, 0, 0);
     }
-    public void printO(PrintWriter out, DoubleLinkNode n)
+    public void print(PrintWriter out, DoubleLinkNode cura, DoubleLinkNode curr, int row, int count)//recursive print
     {
-        if(n == null)
-            return;
-        else{
-            out.print('#');
-            if(n.getNext().getRow() > n.getRow())
-                out.println();
-            for(int i = n.getRow(); i < n.getNext().getRow()+1; i++){
-                for(int j = n.getSeat(); j < n.getNext().getSeat(); j++)
-                        out.print('.');
+        if(count == 20){
+                count -= 20;
+                row++;
                 out.println();
             }
-            if(n.getNext().getNext() != null)
-                printO(out, n.getNext());
+        if(cura != null && curr != null){
+            if(cura.getSeat() == count && cura.getRow() == row){
+                out.print("#");
+                count++;
+                print(out, cura.getNext(), curr, row, count);
+            }
+            else{
+                out.print(".");
+                count++;
+                print(out, cura, curr.getNext(), row, count);
+            }
         }
-        out.print('#');
-        if(n.getNext().getRow() > n.getRow())
-            out.println();
-        for(int i = n.getRow(); i < n.getNext().getRow()+1; i++){
-                for(int j = n.getSeat(); j < n.getNext().getSeat(); j++)
-                        out.print('.');
-                out.println();
+        else if(cura != null){
+            if(cura.getSeat() == count && cura.getRow() == row){
+                out.print("#");
+                count++;
+                print(out, cura.getNext(), curr, row, count);
+            }
+        }
+        else if(curr != null){
+            if(curr.getSeat() == count && curr.getRow() == row){
+                out.print(".");
+                count++;
+                print(out, cura, curr.getNext(), row, count);
+            }
         }
     }
 }
