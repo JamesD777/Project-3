@@ -19,65 +19,111 @@ public class LinkedList {
     public void setTail(DoubleLinkNode tail){this.tail = tail;}
     
     public void addNode(int r, int s){
+        //edge case for head
         if(head == null){
-            head = new DoubleLinkNode(r,s,null,null);
+            head = new DoubleLinkNode(r,s,tail,null);
             tail = head;
+            return;
         }
-        else if(tail.getRow() == r && tail.getSeat() == s){
+        //edge case for tail
+        if(tail.getRow() < r || (tail.getRow() == r && tail.getSeat() < s)){
             tail.setNext(new DoubleLinkNode(r,s,null,tail));
-            setTail(tail.getNext());
+            tail = tail.getNext();
+            return;
         }
-        else{
-            DoubleLinkNode cur = head;
-            while(cur.getNext() != null){
-                if(cur.getRow() >= r){
-                    if(cur.getSeat() > s){
-                        DoubleLinkNode N = new DoubleLinkNode(r,s,cur,cur.getPrev());
-                        cur.getPrev().setNext(N);
-                        cur.setPrev(N);
-                        return;
-                    }
+        DoubleLinkNode c = head;
+        //looks for node that is after new node
+        while(c.getNext() != null){
+            if(c.getRow() >= r){
+                if(c.getSeat() > s || c.getRow() > r){
+                    //adds new node right before node that is bigger than it
+                    DoubleLinkNode newN = new DoubleLinkNode(r,s,c,c.getPrev());
+                    c.getPrev().setNext(newN);
+                    c.setPrev(newN);
+                    return;
                 }
-                cur = cur.getNext();
             }
+            c = c.getNext();
         }
+        //used when first making list from file
+        tail.setNext(new DoubleLinkNode(r,s,null,tail));
+        tail = tail.getNext();
     }
+    
     public void deleteNode(int r, int s){
         DoubleLinkNode c = head;
-        while(c.getNext() != null){
+        //Loops though list util it finds a node with matching row and seat
+        while(c != null){
             if(c.getRow() == r){
                 if(c.getSeat() == s){
+                    //edge case for deleting head
+                    if(c == head){
+                        head = head.getNext();
+                        return;
+                    }
+                    //edge case for deleteing tail
+                    if(c == tail){
+                        tail = tail.getPrev();
+                        tail.setNext(null);
+                        return;
+                    }
+                    //manges pointers to "go around" deleted node and thus delete it
                     c.getPrev().setNext(c.getNext());
                     c.getNext().setPrev(c.getPrev());
-                    break;
+                    return;
                 }
             }
             c = c.getNext();
         }
     }
-    void print(PrintWriter out, DoubleLinkNode n)
-  	{
-            if(n == null)
-                return;
-            else{
-                out.print('.');
-                if(n.getNext().getRow() > n.getRow())
-                    out.println();
-                for(int i = n.getRow(); i < n.getNext().getRow()+1; i++){
-                    for(int j = n.getSeat(); j < n.getNext().getSeat(); j++)
-                            out.print('#');
-                    out.println();
-                }
-                if(n.getNext().getNext() != null)
-                    print(out, n.getNext());
-            }
+    public void printR(PrintWriter out, DoubleLinkNode n)
+    {
+        if(n == null)
+            return;
+        else{
             out.print('.');
             if(n.getNext().getRow() > n.getRow())
                 out.println();
             for(int i = n.getRow(); i < n.getNext().getRow()+1; i++){
-                    for(int j = n.getSeat(); j < n.getNext().getSeat(); j++)
-                            out.print('#');
-                    out.println();
-                }
+                for(int j = n.getSeat(); j < n.getNext().getSeat(); j++)
+                        out.print('#');
+                out.println();
             }
+            if(n.getNext().getNext() != null)
+                printR(out, n.getNext());
+        }
+        out.print('.');
+        if(n.getNext().getRow() > n.getRow())
+            out.println();
+        for(int i = n.getRow(); i < n.getNext().getRow()+1; i++){
+                for(int j = n.getSeat(); j < n.getNext().getSeat(); j++)
+                        out.print('#');
+                out.println();
+        }
+    }
+    public void printO(PrintWriter out, DoubleLinkNode n)
+    {
+        if(n == null)
+            return;
+        else{
+            out.print('#');
+            if(n.getNext().getRow() > n.getRow())
+                out.println();
+            for(int i = n.getRow(); i < n.getNext().getRow()+1; i++){
+                for(int j = n.getSeat(); j < n.getNext().getSeat(); j++)
+                        out.print('.');
+                out.println();
+            }
+            if(n.getNext().getNext() != null)
+                printO(out, n.getNext());
+        }
+        out.print('#');
+        if(n.getNext().getRow() > n.getRow())
+            out.println();
+        for(int i = n.getRow(); i < n.getNext().getRow()+1; i++){
+                for(int j = n.getSeat(); j < n.getNext().getSeat(); j++)
+                        out.print('.');
+                out.println();
+        }
+    }
 }

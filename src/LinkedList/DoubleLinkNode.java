@@ -9,7 +9,7 @@ public class DoubleLinkNode extends BaseNode{
     private DoubleLinkNode prev;
 
     public DoubleLinkNode(){super(-1,-1);next = null;prev = null;}
-    public DoubleLinkNode(int r, int s, DoubleLinkNode n,DoubleLinkNode p){super(r,s);next = null;prev = null;}
+    public DoubleLinkNode(int r, int s, DoubleLinkNode n,DoubleLinkNode p){super(r,s);next = n;prev = p;}
 
     public DoubleLinkNode getNext(){return next;}
     public DoubleLinkNode getPrev(){return prev;}
