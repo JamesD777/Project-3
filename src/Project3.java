@@ -163,7 +163,7 @@ public class Project3 {
                         else
                             System.out.println("Seats NOT reserved");
                     }
-                    r.print(p, a);
+                    r.print(p, a, r);
                     p.close();
 
                     break;
@@ -203,7 +203,50 @@ public class Project3 {
                     break;
             }
         }
+        //Print 4 lines displaying columns of the names, seats reserved, seats open, and total ticket sales for each auditorium and the total overall.
+        System.out.print("\nAuditorium:  Reserved Open  Sales");
+        int size1 = size(A1Reserved, A1Available);
+        int size2 = size(A2Reserved, A2Available);
+        int size3 = size(A3Reserved, A2Available);
+        int r1 = 0;
+        DoubleLinkNode cur = A1Reserved.getHead();
+        while(cur != null){
+            r1++;
+            cur = cur.getNext();
+        }
+        int r2 = 0;
+        cur = A2Reserved.getHead();
+        while(cur != null){
+            r2++;
+            cur = cur.getNext();
+        }
+        int r3 = 0;
+        cur = A3Reserved.getHead();
+        while(cur != null){
+            r3++;
+            cur = cur.getNext();
+        }
+        System.out.print("\nAuditorium 1: " + r1 + "       " + (size1 - r1) + "    $" + (r1 * 7) + "   ");
+        System.out.print("\nAuditorium 2: " + r2 + "       " + (size2 - r2) + "    $" + (r2 * 7) + "   ");
+        System.out.print("\nAuditorium 3: " + r3 + "       " + (size3 - r3) + "    $" + (r3 * 7) + "   ");
+
+        System.out.print("\nTotal:        " + (r1+r2+r3) + "      " + ((size3 - r3)+(size2 - r2)+(size1 - r1))+ "   $" + (r1+r2+r3)*7 + "   ");
+
     }
+    public static int size(LinkedList a, LinkedList b){
+        int row, seat;
+        
+        if(a.getTail().getSeat() > b.getTail().getSeat())
+            seat = a.getTail().getSeat();
+        else
+            seat = b.getTail().getSeat();
+        if(a.getTail().getRow() > b.getTail().getRow())
+            row = a.getTail().getRow();
+        else
+            row = b.getTail().getRow();
+        return (row+1) * (seat+1);
+    }
+    
     public static void display(LinkedList a, LinkedList r){
         System.out.print("  ");
         int s;
@@ -230,14 +273,14 @@ public class Project3 {
                 curr = curr.getNext();
             }
             count++;
-            if(count == 20){
-                count -= 20;
+            if(count == s){
+                count -= s;
                 row++;
                 System.out.print("\n" + (row+1) + " ");}
         }
         while(cura != null){
-            if(count == 20){
-                count -= 20;
+            if(count == s){
+                count -= s;
                 row++;
                 System.out.print("\n" + (row+1) + " ");}
             if(cura.getSeat() == count && cura.getRow() == row){
@@ -247,8 +290,8 @@ public class Project3 {
             count++;
         }
         while(curr != null){
-            if(count == 20){
-                count -= 20;
+            if(count == s){
+                count -= s;
                 row++;
                 System.out.print("\n" + (row+1) + " ");}
             if(curr.getSeat() == count && curr.getRow() == row){

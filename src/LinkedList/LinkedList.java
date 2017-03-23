@@ -77,14 +77,19 @@ public class LinkedList {
         }
     }
     
-    public void print(PrintWriter out, LinkedList a)//recursive helper function
+    public void print(PrintWriter out, LinkedList a, LinkedList r)//recursive helper function
     {
-        print(out, a.getHead(), head, 0, 0);
+        int s;
+        if(a.getTail().getSeat() > r.getTail().getSeat())
+            s = a.tail.getSeat()+1;
+        else
+            s = r.tail.getSeat()+1;
+        print(out, a.getHead(), head, 0, 0, s);
     }
-    public void print(PrintWriter out, DoubleLinkNode cura, DoubleLinkNode curr, int row, int count)//recursive print
+    public void print(PrintWriter out, DoubleLinkNode cura, DoubleLinkNode curr, int row, int count, int size)//recursive print
     {
-        if(count == 20){
-                count -= 20;
+        if(count == size){
+                count -= size;
                 row++;
                 out.println();
             }
@@ -92,26 +97,26 @@ public class LinkedList {
             if(cura.getSeat() == count && cura.getRow() == row){
                 out.print("#");
                 count++;
-                print(out, cura.getNext(), curr, row, count);
+                print(out, cura.getNext(), curr, row, count, size);
             }
             else{
                 out.print(".");
                 count++;
-                print(out, cura, curr.getNext(), row, count);
+                print(out, cura, curr.getNext(), row, count, size);
             }
         }
         else if(cura != null){
             if(cura.getSeat() == count && cura.getRow() == row){
                 out.print("#");
                 count++;
-                print(out, cura.getNext(), curr, row, count);
+                print(out, cura.getNext(), curr, row, count, size);
             }
         }
         else if(curr != null){
             if(curr.getSeat() == count && curr.getRow() == row){
                 out.print(".");
                 count++;
-                print(out, cura, curr.getNext(), row, count);
+                print(out, cura, curr.getNext(), row, count, size);
             }
         }
     }
