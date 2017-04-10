@@ -1,10 +1,6 @@
-package LinkedList;
+package LinkList;
 
-/**
- *
- * @author jcd4912
- */
-public class DoubleLinkNode extends BaseNode{
+public class DoubleLinkNode extends BaseNode{//extends base node and adds next and prev functionality
     private DoubleLinkNode next;
     private DoubleLinkNode prev;
 

@@ -1,11 +1,8 @@
-package LinkedList;
+//James Dunlap   Jcd160230
+package LinkList;
 
 import java.io.PrintWriter;
 
-/**
- *
- * @author jcd4912
- */
 public class LinkedList {
     private DoubleLinkNode head;
     private DoubleLinkNode tail;
@@ -88,12 +85,12 @@ public class LinkedList {
     }
     public void print(PrintWriter out, DoubleLinkNode cura, DoubleLinkNode curr, int row, int count, int size)//recursive print
     {
-        if(count == size){
+        if(count == size && (curr!=null && cura != null)){//print new line if at the end of a row
                 count -= size;
                 row++;
                 out.println();
             }
-        if(cura != null && curr != null){
+        if(cura != null && curr != null){//if both nodes aren't at the tails, add the next . or #
             if(cura.getSeat() == count && cura.getRow() == row){
                 out.print("#");
                 count++;
@@ -105,14 +102,14 @@ public class LinkedList {
                 print(out, cura, curr.getNext(), row, count, size);
             }
         }
-        else if(cura != null){
+        else if(cura != null){//if row of available is at the end, add #'s
             if(cura.getSeat() == count && cura.getRow() == row){
                 out.print("#");
                 count++;
                 print(out, cura.getNext(), curr, row, count, size);
             }
         }
-        else if(curr != null){
+        else if(curr != null){//if row of reserved at the end, add .'s
             if(curr.getSeat() == count && curr.getRow() == row){
                 out.print(".");
                 count++;
